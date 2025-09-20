@@ -1,6 +1,6 @@
 {
   "name": "@joecodesallday/accessible-a11y-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A command-line tool for accessibility testing using axe-core",
   "main": "src/index.js",
   "bin": {
