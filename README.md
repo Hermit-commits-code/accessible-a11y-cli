@@ -21,10 +21,10 @@ npm install -g accessible-a11y-cli
 
 ## 🛠️ Usage
 
-Run accessibility checks on one or more HTML/JSX files:
+Run accessibility checks on one or more HTML/JSX files or remote URLs:
 
 ```bash
-a11y-check check path/to/file.html path/to/other.jsx
+a11y-check check path/to/file.html path/to/other.jsx https://example.com
 ```
 
 ### Options
@@ -34,18 +34,25 @@ a11y-check check path/to/file.html path/to/other.jsx
 - `--fix` Attempt to auto-fix common issues
 - `--verbose` Verbose output
 
+You can mix local file paths and URLs in a single command. URLs must start with `http://` or `https://`.
+
 ### Example
 
 ```bash
-a11y-check check src/**/*.html --format json --output results.json
+# Check a local file, a JSX file, and a remote URL
+a11y-check check test/test.html src/App.jsx https://example.com
+
+# Output results as JSON and save to a file
+a11y-check check https://example.com --format json --output results.json
 ```
 
 ## 🗺️ Roadmap
 
 - [x] CLI scaffold and project setup
 - [x] Integrate axe-core for accessibility checks
-- [ ] Parse HTML/JSX and report issues in readable format
-- [ ] Support CLI flags: format, fix, output
+- [x] Parse HTML/JSX and report issues in readable format
+- [x] Support CLI flags: format, fix, output
+- [x] Add URL scanning support
 - [ ] Add autofix for common issues
 - [ ] Markdown/code output support
 - [ ] CI/CD integration and npm release

@@ -2,6 +2,7 @@ const fs = require('fs').promises;
 const path = require('path');
 const { Chalk } = require('chalk');
 const chalk = new Chalk();
+const fetch = require('node-fetch');
 
 class AccessibilityChecker {
   constructor(options = {}) {
@@ -13,20 +14,95 @@ class AccessibilityChecker {
     };
   }
 
-  async checkFiles(filePaths) {
-    console.log(chalk.blue(`📁 Processing ${filePaths.length} file(s)...`));
+  async checkFiles(inputs) {
+    console.log(chalk.blue(`📁 Processing ${inputs.length} input(s)...`));
     const results = [];
-    for (const filePath of filePaths) {
+    for (const input of inputs) {
       try {
-        const result = await this.checkFile(filePath);
-        results.push(result);
+        if (this.isUrl(input)) {
+          const result = await this.checkUrl(input);
+          results.push(result);
+        } else {
+          const result = await this.checkFile(input);
+          results.push(result);
+        }
       } catch (error) {
         console.error(
-          chalk.red(`❌ Error processing ${filePath}:`, error.message)
+          chalk.red(`❌ Error processing ${input}:`, error.message)
         );
       }
     }
     return results;
+  }
+
+  isUrl(str) {
+    try {
+      new URL(str);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  async checkUrl(url) {
+    if (this.options.verbose) {
+      console.log(chalk.gray(`🔗 Fetching: ${url}`));
+    }
+    let htmlContent;
+    try {
+      const res = await fetch(url);
+      htmlContent = await res.text();
+    } catch (e) {
+      return {
+        file: url,
+        error: `Failed to fetch URL: ${e.message}`,
+        violations: [],
+        passes: [],
+        incomplete: [],
+        inapplicable: [],
+      };
+    }
+    // Use jsdom to create a DOM for axe-core
+    const { JSDOM } = require('jsdom');
+    const dom = new JSDOM(htmlContent, { url });
+    const { window } = dom;
+
+    // axe-core expects a global window and document and related classes
+    global.window = window;
+    global.document = window.document;
+    global.Node = window.Node;
+    global.Element = window.Element;
+    global.HTMLElement = window.HTMLElement;
+
+    // Require axe-core after globals are set
+    const axe = require('axe-core');
+
+    // Run axe-core
+    const results = await new Promise((resolve, reject) => {
+      axe.run(
+        window.document,
+        this.options.axeOptions || {},
+        (err, results) => {
+          if (err) return reject(err);
+          resolve(results);
+        }
+      );
+    });
+
+    // Clean up globals
+    delete global.window;
+    delete global.document;
+    delete global.Node;
+    delete global.Element;
+    delete global.HTMLElement;
+
+    return {
+      file: url,
+      violations: results.violations,
+      passes: results.passes,
+      incomplete: results.incomplete,
+      inapplicable: results.inapplicable,
+    };
   }
 
   async checkFile(filePath) {

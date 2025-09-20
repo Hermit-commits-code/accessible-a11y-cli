@@ -23,8 +23,8 @@ program
 
 // Check command
 program
-  .command('check <files...>')
-  .description('Run accessibility checks on HTML/JSX files')
+  .command('check <inputs...>')
+  .description('Run accessibility checks on HTML/JSX files or URLs')
   .option('-f, --format <type>', 'output format (json, table, html)', 'table')
   .option('-o, --output <file>', 'output file path')
   .option('--fix', 'attempt to auto-fix common issues')
