@@ -181,13 +181,26 @@ class AccessibilityChecker {
       );
     });
 
+    // Filter violations by enabled/disabled rules if specified
+    let filteredViolations = results.violations;
+    if (this.options.rules && Array.isArray(this.options.rules)) {
+      filteredViolations = filteredViolations.filter((v) =>
+        this.options.rules.includes(v.id)
+      );
+    }
+    if (this.options.disableRule && Array.isArray(this.options.disableRule)) {
+      filteredViolations = filteredViolations.filter(
+        (v) => !this.options.disableRule.includes(v.id)
+      );
+    }
+
     let autofixLog = [];
     let fixes = [];
     if (this.options.fix || this.options.fixDryRun) {
       const logFix = (msg) => autofixLog.push(msg);
       fixes = await this.autofix(
         dom,
-        results.violations,
+        filteredViolations,
         logFix,
         this.options.fixDryRun
       );
@@ -209,7 +222,7 @@ class AccessibilityChecker {
 
     return {
       file: filePath,
-      violations: results.violations,
+      violations: filteredViolations,
       passes: results.passes,
       incomplete: results.incomplete,
       inapplicable: results.inapplicable,
@@ -218,16 +231,69 @@ class AccessibilityChecker {
     };
   }
 
-  formatResults(results, format = 'table') {
-    switch (format.toLowerCase()) {
-      case 'json':
-        return JSON.stringify(results, null, 2);
-      case 'html':
-        return this.formatAsHtml(results);
-      case 'table':
-      default:
-        return this.formatAsTable(results);
+  formatResults(results, format = 'table', autofixLogs = false) {
+    // If autofixLogs is true, format only autofix logs for each result
+    if (autofixLogs) {
+      switch (format.toLowerCase()) {
+        case 'json':
+          return JSON.stringify(
+            results.map((r) => ({ file: r.file, autofixLog: r.autofixLog })),
+            null,
+            2
+          );
+        case 'html':
+          return this.formatAutofixHtml(results);
+        case 'table':
+        default:
+          return this.formatAutofixTable(results);
+      }
+    } else {
+      switch (format.toLowerCase()) {
+        case 'json':
+          return JSON.stringify(results, null, 2);
+        case 'html':
+          return this.formatAsHtml(results);
+        case 'table':
+        default:
+          return this.formatAsTable(results);
+      }
     }
+  }
+
+  formatAutofixTable(results) {
+    let output = '\n';
+    output += chalk.bold.blue('🛠️  Autofix Logs\n');
+    output += chalk.gray('='.repeat(50)) + '\n\n';
+    for (const result of results) {
+      output += chalk.bold(`📄 File: ${result.file}\n`);
+      if (result.autofixLog && result.autofixLog.length > 0) {
+        for (const msg of result.autofixLog) {
+          output += '  ' + msg + '\n';
+        }
+      } else {
+        output += chalk.gray('  (No autofix actions performed)\n');
+      }
+    }
+    return output;
+  }
+
+  formatAutofixHtml(results) {
+    let html = '<html><head><title>Autofix Logs</title></head><body>';
+    html += '<h1>🛠️  Autofix Logs</h1>';
+    for (const result of results) {
+      html += `<h2>File: ${result.file}</h2>`;
+      if (result.autofixLog && result.autofixLog.length > 0) {
+        html += '<ul>';
+        for (const msg of result.autofixLog) {
+          html += `<li>${msg}</li>`;
+        }
+        html += '</ul>';
+      } else {
+        html += '<p><em>(No autofix actions performed)</em></p>';
+      }
+    }
+    html += '</body></html>';
+    return html;
   }
 
   formatAsTable(results) {
@@ -270,8 +336,8 @@ class AccessibilityChecker {
     return '<html><body><h1>Accessibility Results</h1></body></html>';
   }
 
-  async saveResults(results, outputPath, format = 'json') {
-    const formattedResults = this.formatResults(results, format);
+  async saveResults(results, outputPath, format = 'json', autofixLogs = false) {
+    const formattedResults = this.formatResults(results, format, autofixLogs);
     await fs.writeFile(outputPath, formattedResults, 'utf8');
     console.log(chalk.green(`💾 Results saved to: ${outputPath}`));
   }

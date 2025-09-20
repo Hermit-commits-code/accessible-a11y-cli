@@ -15,7 +15,7 @@
 - **Clear, actionable CLI output** with color, symbols, and summaries
 - **Rich logging and verbosity options** for troubleshooting
 - **Fail-safe file handling**: always backs up originals before fixing, and supports dry-run by default
-- **Configurable rules and output formats** (table, JSON, HTML)
+- **Configurable rules and output formats** (table, JSON, HTML) for both results and autofix logs
 - **Great developer experience**: fast, reliable, easy to use, and CI/CD ready
 
 ---
@@ -60,6 +60,13 @@ Run accessibility checks on one or more HTML/JSX files or remote URLs:
 a11y-check check path/to/file.html path/to/other.jsx https://example.com
 ```
 
+### Output Formats & Rule Configuration
+
+- Output and autofix logs can be saved in `table`, `json`, or `html` formats using `--format`.
+- Use `--output <file>` to save results and logs to a file.
+- Enable or disable specific rules with `--rules` and `--disable-rule` (comma-separated list).
+- All output formats are supported for both results and autofix logs.
+
 ### Options
 
 - `-f, --format <type>` Output format: `table` (default), `json`, or `html`
@@ -92,6 +99,15 @@ a11y-check check --fix-dry-run test/test.html
 
 # Output results as JSON and save to a file
 a11y-check check https://example.com --format json --output results.json
+
+# Output autofix log as HTML
+a11y-check check --fix --format html --output autofix-log.html test/test.html
+
+# Output autofix log as table (plain text)
+a11y-check check --fix --format table --output autofix-log.txt test/test.html
+
+# Disable specific rules and output as JSON
+a11y-check check --fix --disable-rule=region,tabindex --format json --output autofix-log.json test/test.html
 ```
 
 ## 🗺️ Roadmap

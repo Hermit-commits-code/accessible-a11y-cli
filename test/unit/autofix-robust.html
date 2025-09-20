@@ -10,8 +10,8 @@
         outline: none;
       }
     </style>
-  <style>* { pointer-events: all }</style></head>
-  <body><h1>Main Heading</h1>
+  <style>* { pointer-events: all }</style><style>* { pointer-events: all }</style><style>* { pointer-events: all }</style></head>
+  <body>
     <!-- Missing lang on <html> -->
     <!-- Missing alt on image -->
     <img src="logo.png" alt="">
@@ -40,7 +40,7 @@
     <div>Content</div>
 
     <!-- Empty link text -->
-    <a href="#"></a>
+    <a href="#">Descriptive link</a>
 
     <!-- Multiple links with same text -->
     <a href="#">Click here</a>
@@ -63,7 +63,7 @@
     <iframe src="about:blank"></iframe>
 
     <!-- Landmark region overlap -->
-    <nav><main></main></nav>
+    <nav><main><h1>Main Heading</h1></main></nav>
 
     <!-- Duplicate IDs -->
     <div id="dup"></div>

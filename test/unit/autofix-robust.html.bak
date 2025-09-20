@@ -1,8 +1,6 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title></title>
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <title>Accessible Page</title>
     <style>
       .low-contrast {
         color: #fff;
@@ -12,16 +10,16 @@
         outline: none;
       }
     </style>
-  </head>
+  <style>* { pointer-events: all }</style><style>* { pointer-events: all }</style></head>
   <body>
     <!-- Missing lang on <html> -->
     <!-- Missing alt on image -->
-    <img src="logo.png" />
+    <img src="logo.png" alt="">
 
     <!-- Missing label for input -->
     <form>
-      <input type="text" id="test-input" />
-      <input type="checkbox" id="cb1" />
+      <label for="test-input">Label</label><input type="text" id="test-input">
+      <label for="cb1">Label</label><input type="checkbox" id="cb1">
     </form>
 
     <!-- Heading order issue: no h1, only h2 and h3 -->
@@ -53,10 +51,10 @@
 
     <!-- Table missing headers -->
     <table>
-      <tr>
+      <tbody><tr>
         <td>Data</td>
       </tr>
-    </table>
+    </tbody></table>
 
     <!-- List with no list items -->
     <ul></ul>
@@ -65,7 +63,7 @@
     <iframe src="about:blank"></iframe>
 
     <!-- Landmark region overlap -->
-    <nav><main></main></nav>
+    <nav><main><h1>Main Heading</h1></main></nav>
 
     <!-- Duplicate IDs -->
     <div id="dup"></div>
@@ -73,5 +71,6 @@
 
     <!-- ARIA attribute misuse -->
     <div aria-label="" aria-hidden="maybe"></div>
-  </body>
-</html>
+  
+
+</body></html>

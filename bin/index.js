@@ -26,6 +26,14 @@ program
   .command('check <inputs...>')
   .description('Run accessibility checks on HTML/JSX files or URLs')
   .option('-f, --format <type>', 'output format (json, table, html)', 'table')
+  .option(
+    '--rules <list>',
+    'comma-separated list of rules to enable (e.g. image-alt,label,region)'
+  )
+  .option(
+    '--disable-rule <list>',
+    'comma-separated list of rules to disable (e.g. color-contrast,tabindex)'
+  )
   .option('-o, --output <file>', 'output file path')
   .option('--fix', 'attempt to auto-fix common accessibility issues')
   .option(
@@ -48,6 +56,19 @@ program
       if (options.noFixDryRun) {
         options.fixDryRun = false;
       }
+    }
+    // Parse rules/disables into arrays
+    if (options.rules) {
+      options.rules = options.rules
+        .split(',')
+        .map((r) => r.trim())
+        .filter(Boolean);
+    }
+    if (options.disableRule) {
+      options.disableRule = options.disableRule
+        .split(',')
+        .map((r) => r.trim())
+        .filter(Boolean);
     }
     const checker = new AccessibilityChecker(options);
     try {
