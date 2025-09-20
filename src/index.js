@@ -275,6 +275,9 @@ class AccessibilityChecker {
   }
 
   async autofix(dom, violations, logFix, dryRun = false) {
+    logFix(
+      `[autofix-debug] autofix called. Violation ids: ${violations.map((v) => v.id).join(', ')}`
+    );
     // Advanced autofix: context-aware DOM fixes for common issues
     // This is a scaffold: add more rules as needed
     let fixes = [];
@@ -284,12 +287,19 @@ class AccessibilityChecker {
         // Add missing alt attributes to images
         for (const node of v.nodes) {
           for (const selector of node.target) {
-            const img = document.querySelector(selector);
-            if (img && !img.hasAttribute('alt')) {
-              img.setAttribute('alt', '');
-              fixes.push({ type: 'alt', selector });
-              logFix(`Added missing alt attribute to: ${selector}`);
-            }
+            const imgs = document.querySelectorAll(selector);
+            logFix(
+              `[autofix-debug] Checking selector: ${selector}, found ${imgs.length} element(s)`
+            );
+            imgs.forEach((img) => {
+              if (!img.hasAttribute('alt')) {
+                img.setAttribute('alt', '');
+                fixes.push({ type: 'alt', selector });
+                logFix(`Added missing alt attribute to: ${selector}`);
+              } else {
+                logFix(`[autofix-debug] alt already present for: ${selector}`);
+              }
+            });
           }
         }
       }
@@ -300,6 +310,8 @@ class AccessibilityChecker {
           html.setAttribute('lang', 'en');
           fixes.push({ type: 'lang', selector: 'html' });
           logFix('Added lang="en" to <html>');
+        } else {
+          logFix('[autofix-debug] lang already present for <html>');
         }
       }
       // Add more advanced autofix rules here (labels, headings, ARIA, etc.)

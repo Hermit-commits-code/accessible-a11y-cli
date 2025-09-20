@@ -43,13 +43,15 @@ program
         await checker.saveResults(results, options.output, options.format);
       }
       console.log(output);
-      // Print autofix logs if any
+      // Print autofix logs (always show, even if empty)
       for (const result of results) {
+        console.log(chalk.yellow('Autofix log for ' + result.file + ':'));
         if (result.autofixLog && result.autofixLog.length > 0) {
-          console.log(chalk.yellow('Autofix log for ' + result.file + ':'));
           for (const msg of result.autofixLog) {
             console.log(chalk.yellow('  ' + msg));
           }
+        } else {
+          console.log(chalk.gray('  (No autofix actions performed)'));
         }
       }
     } catch (err) {

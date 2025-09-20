@@ -1,3 +1,13 @@
+
+## [0.5.0] - 2025-09-20
+
+### Added
+
+- Improved autofix logic: more robust context-aware DOM fixes
+- Debug output for autofix actions (see CLI output)
+- Ensured backup and restoration of original files
+- Internal refactoring for extensibility of autofix rules
+
 ## [0.4.0] - 2025-09-20
 
 ### Added
