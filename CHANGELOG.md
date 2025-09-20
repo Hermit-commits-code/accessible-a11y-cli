@@ -1,3 +1,14 @@
+# [1.3.1] - 2025-09-20
+
+### Added
+
+- Robust CLI integration tests for output/logging (table, JSON, HTML)
+- Improved unit tests for output formatting
+
+### Fixed
+
+- CLI now outputs autofix logs in the requested format when --fix and --output are used
+
 # Changelog
 
 All notable changes to this project will be documented in this file.

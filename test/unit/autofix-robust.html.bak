@@ -10,7 +10,7 @@
         outline: none;
       }
     </style>
-  <style>* { pointer-events: all }</style><style>* { pointer-events: all }</style></head>
+  <style>* { pointer-events: all }</style><style>* { pointer-events: all }</style><style>* { pointer-events: all }</style></head>
   <body>
     <!-- Missing lang on <html> -->
     <!-- Missing alt on image -->
@@ -40,7 +40,7 @@
     <div>Content</div>
 
     <!-- Empty link text -->
-    <a href="#"></a>
+    <a href="#">Descriptive link</a>
 
     <!-- Multiple links with same text -->
     <a href="#">Click here</a>

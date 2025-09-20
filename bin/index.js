@@ -45,9 +45,7 @@ program
   .option('--debug', 'debug output (implies verbose)')
   .action(async (files, options) => {
     const { AccessibilityChecker } = require('../src/index.js');
-    // Support --debug as a superset of --verbose
     if (options.debug) options.verbose = true;
-    // Make --fix-dry-run default to true when --fix is set, unless --no-fix-dry-run is specified
     if (options.fix) {
       options.fix = true;
       if (typeof options.fixDryRun === 'undefined') {
@@ -57,7 +55,6 @@ program
         options.fixDryRun = false;
       }
     }
-    // Parse rules/disables into arrays
     if (options.rules) {
       options.rules = options.rules
         .split(',')
@@ -73,24 +70,23 @@ program
     const checker = new AccessibilityChecker(options);
     try {
       const results = await checker.checkFiles(files);
-      const output = checker.formatResults(results, options.format);
-      if (options.output) {
-        // If autofix and output, write fixed HTML for the first file (single-file use case)
-        if (
-          options.fix &&
-          results.length === 1 &&
-          results[0].autofix &&
-          !results[0].error
-        ) {
-          // Write the fixed HTML
-          const { JSDOM } = require('jsdom');
-          const content = await fs.promises.readFile(results[0].file, 'utf8');
-          const dom = new JSDOM(content);
-          await fs.promises.writeFile(options.output, dom.serialize(), 'utf8');
-          console.log(chalk.green(`💾 Fixed HTML saved to: ${options.output}`));
-        } else {
-          await checker.saveResults(results, options.output, options.format);
-        }
+      let output;
+      // If --fix and --output, output autofix log in requested format
+      if (options.output && options.fix) {
+        await checker.saveResults(
+          results,
+          options.output,
+          options.format,
+          true
+        );
+        output = checker.formatResults(results, options.format, true);
+        console.log(chalk.green(`💾 Autofix log saved to: ${options.output}`));
+      } else if (options.output) {
+        await checker.saveResults(results, options.output, options.format);
+        output = checker.formatResults(results, options.format);
+        console.log(chalk.green(`💾 Results saved to: ${options.output}`));
+      } else {
+        output = checker.formatResults(results, options.format, !!options.fix);
       }
       console.log(output);
       let totalFixed = 0;
@@ -101,7 +97,6 @@ program
         console.log(chalk.yellow('🛠️  Autofix log for'), fileLabel + ':');
         if (result.autofixLog && result.autofixLog.length > 0) {
           for (const msg of result.autofixLog) {
-            // If verbose/debug, show all log lines, including context
             if (options.verbose && msg.startsWith('[autofix-debug]')) {
               console.log(chalk.magenta('  🐞 ' + msg));
               continue;

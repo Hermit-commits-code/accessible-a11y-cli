@@ -20,6 +20,12 @@
 
 ---
 
+## 🚀 What's New in 1.3.1
+
+- Robust CLI integration tests for output/logging (table, JSON, HTML)
+- Fixed: CLI now outputs autofix logs in the requested format when --fix and --output are used
+- Improved documentation and test coverage for output formatting
+
 ## 🚀 What's New in 1.1.4
 
 - Expanded robust test file with more accessibility issues for better coverage
