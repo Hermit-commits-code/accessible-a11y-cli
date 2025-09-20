@@ -1,12 +1,12 @@
-const fs = require("fs").promises;
-const path = require("path");
-const { Chalk } = require("chalk");
+const fs = require('fs').promises;
+const path = require('path');
+const { Chalk } = require('chalk');
 const chalk = new Chalk();
 
 class AccessibilityChecker {
   constructor(options = {}) {
     this.options = {
-      format: "table",
+      format: 'table',
       verbose: false,
       fix: false,
       ...options,
@@ -30,7 +30,7 @@ class AccessibilityChecker {
   }
 
   async checkFile(filePath) {
-    const content = await fs.readFile(filePath, "utf8");
+    const content = await fs.readFile(filePath, 'utf8');
     const ext = path.extname(filePath).toLowerCase();
 
     if (this.options.verbose) {
@@ -38,19 +38,19 @@ class AccessibilityChecker {
     }
 
     let htmlContent = content;
-    if (ext === ".jsx") {
+    if (ext === '.jsx') {
       try {
-        const babel = require("@babel/core");
-        const reactDomServer = require("react-dom/server");
-        const React = require("react");
+        const babel = require('@babel/core');
+        const reactDomServer = require('react-dom/server');
+        const React = require('react');
         const transpiled = babel.transformSync(content, {
-          presets: [require.resolve("@babel/preset-react")],
+          presets: [require.resolve('@babel/preset-react')],
           filename: filePath,
         });
-        // eslint-disable-next-line no-eval
+
         const Component = eval(
           transpiled.code +
-            ";module.exports = exports.default || module.exports;"
+            ';module.exports = exports.default || module.exports;'
         );
         htmlContent = reactDomServer.renderToStaticMarkup(
           React.createElement(Component)
@@ -65,10 +65,10 @@ class AccessibilityChecker {
           inapplicable: [],
         };
       }
-    } else if (ext !== ".html" && ext !== ".htm") {
+    } else if (ext !== '.html' && ext !== '.htm') {
       return {
         file: filePath,
-        error: "Unsupported file type (only .html/.htm/.jsx supported)",
+        error: 'Unsupported file type (only .html/.htm/.jsx supported)',
         violations: [],
         passes: [],
         incomplete: [],
@@ -77,7 +77,7 @@ class AccessibilityChecker {
     }
 
     // Use jsdom to create a DOM for axe-core
-    const { JSDOM } = require("jsdom");
+    const { JSDOM } = require('jsdom');
     const dom = new JSDOM(htmlContent);
     const { window } = dom;
 
@@ -89,7 +89,7 @@ class AccessibilityChecker {
     global.HTMLElement = window.HTMLElement;
 
     // Require axe-core after globals are set
-    const axe = require("axe-core");
+    const axe = require('axe-core');
 
     // Run axe-core
     const results = await new Promise((resolve, reject) => {
@@ -119,22 +119,22 @@ class AccessibilityChecker {
     };
   }
 
-  formatResults(results, format = "table") {
+  formatResults(results, format = 'table') {
     switch (format.toLowerCase()) {
-      case "json":
+      case 'json':
         return JSON.stringify(results, null, 2);
-      case "html":
+      case 'html':
         return this.formatAsHtml(results);
-      case "table":
+      case 'table':
       default:
         return this.formatAsTable(results);
     }
   }
 
   formatAsTable(results) {
-    let output = "\n";
-    output += chalk.bold.blue("📊 Accessibility Check Results\n");
-    output += chalk.gray("=".repeat(50)) + "\n\n";
+    let output = '\n';
+    output += chalk.bold.blue('📊 Accessibility Check Results\n');
+    output += chalk.gray('='.repeat(50)) + '\n\n';
 
     for (const result of results) {
       output += chalk.bold(`📄 File: ${result.file}\n`);
@@ -143,7 +143,7 @@ class AccessibilityChecker {
         continue;
       }
       if (result.violations.length === 0) {
-        output += chalk.green("  No accessibility violations found!\n\n");
+        output += chalk.green('  No accessibility violations found!\n\n');
       } else {
         output += chalk.red(`  Violations: ${result.violations.length}\n`);
         for (const v of result.violations) {
@@ -153,14 +153,14 @@ class AccessibilityChecker {
           output += chalk.gray(`      Help: ${v.helpUrl}\n`);
           for (const node of v.nodes) {
             output += chalk.yellow(
-              `      Selector: ${node.target.join(", ")}\n`
+              `      Selector: ${node.target.join(', ')}\n`
             );
             output += chalk.gray(
-              `      Failure Summary: ${node.failureSummary || "N/A"}\n`
+              `      Failure Summary: ${node.failureSummary || 'N/A'}\n`
             );
           }
         }
-        output += "\n";
+        output += '\n';
       }
     }
     return output;
@@ -168,12 +168,12 @@ class AccessibilityChecker {
 
   formatAsHtml(results) {
     // TODO: Implement HTML formatting
-    return "<html><body><h1>Accessibility Results</h1></body></html>";
+    return '<html><body><h1>Accessibility Results</h1></body></html>';
   }
 
-  async saveResults(results, outputPath, format = "json") {
+  async saveResults(results, outputPath, format = 'json') {
     const formattedResults = this.formatResults(results, format);
-    await fs.writeFile(outputPath, formattedResults, "utf8");
+    await fs.writeFile(outputPath, formattedResults, 'utf8');
     console.log(chalk.green(`💾 Results saved to: ${outputPath}`));
   }
 }

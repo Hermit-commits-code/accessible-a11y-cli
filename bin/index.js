@@ -1,36 +1,36 @@
 #!/usr/bin/env node
 
-const { program } = require("commander");
-const { Chalk } = require("chalk");
+const { program } = require('commander');
+const { Chalk } = require('chalk');
 const chalk = new Chalk();
-const figlet = require("figlet");
-const { version } = require("../package.json");
+const figlet = require('figlet');
+const { version } = require('../package.json');
 
 // Display welcome banner
 console.log(
-  chalk.green(figlet.textSync("A11y CLI", { horizontalLayout: "full" }))
+  chalk.green(figlet.textSync('A11y CLI', { horizontalLayout: 'full' }))
 );
 
-console.log(chalk.blue("🌟 Accessible A11y CLI ready!"));
+console.log(chalk.blue('🌟 Accessible A11y CLI ready!'));
 console.log(chalk.gray(`Version ${version}`));
 console.log();
 
 // Set up CLI program
 program
-  .name("a11y-check")
-  .description("CLI tool for accessibility testing using axe-core")
+  .name('a11y-check')
+  .description('CLI tool for accessibility testing using axe-core')
   .version(version);
 
 // Check command
 program
-  .command("check <files...>")
-  .description("Run accessibility checks on HTML/JSX files")
-  .option("-f, --format <type>", "output format (json, table, html)", "table")
-  .option("-o, --output <file>", "output file path")
-  .option("--fix", "attempt to auto-fix common issues")
-  .option("--verbose", "verbose output")
+  .command('check <files...>')
+  .description('Run accessibility checks on HTML/JSX files')
+  .option('-f, --format <type>', 'output format (json, table, html)', 'table')
+  .option('-o, --output <file>', 'output file path')
+  .option('--fix', 'attempt to auto-fix common issues')
+  .option('--verbose', 'verbose output')
   .action(async (files, options) => {
-    const { AccessibilityChecker } = require("../src/index.js");
+    const { AccessibilityChecker } = require('../src/index.js');
     const checker = new AccessibilityChecker(options);
     try {
       const results = await checker.checkFiles(files);
@@ -41,7 +41,7 @@ program
       console.log(output);
     } catch (err) {
       console.error(
-        chalk.red("❌ Error running accessibility checks:"),
+        chalk.red('❌ Error running accessibility checks:'),
         err.message
       );
       process.exit(1);
@@ -50,13 +50,13 @@ program
 
 // Init command
 program
-  .command("init")
-  .description("Initialize accessibility configuration")
+  .command('init')
+  .description('Initialize accessibility configuration')
   .action(() => {
-    console.log(chalk.blue("📋 Initializing accessibility configuration..."));
+    console.log(chalk.blue('📋 Initializing accessibility configuration...'));
     // TODO: Create config file
     console.log(
-      chalk.green("✅ Configuration initialized! (Not implemented yet)")
+      chalk.green('✅ Configuration initialized! (Not implemented yet)')
     );
   });
 
