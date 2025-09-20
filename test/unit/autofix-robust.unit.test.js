@@ -1,5 +1,5 @@
 const { JSDOM } = require('jsdom');
-const { AccessibilityChecker } = require('../src/index');
+const { AccessibilityChecker } = require('../../src/index');
 
 describe('AccessibilityChecker.autofix (unit)', () => {
   function runAutofix({ html, violations }) {

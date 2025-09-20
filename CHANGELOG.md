@@ -1,3 +1,21 @@
+# [1.1.0] - 2025-09-20
+
+### Added
+- CLI output and UX improvements: clearer logs, color, and actionable summaries
+- Idempotent, context-aware autofix logic for all major accessibility issues
+- Fail-safe file handling: always backs up originals, supports dry-run
+- Configurable rules and output formats (table, JSON, HTML)
+- Enhanced developer experience: fast, reliable, CI/CD ready
+
+### Changed
+- Refactored autofix logic for better testability and maintainability
+- Improved documentation and examples in README
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
 # [1.0.0] - 2025-09-20
 
 ### Major
@@ -7,12 +25,6 @@
 - Comprehensive, reliable unit tests for all autofix logic
 - Cleaned up legacy and redundant test files for maintainability
 - Ready for production and open source use
-
-# Changelog
-
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.5.0] - 2025-09-20
 

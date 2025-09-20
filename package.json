@@ -3,8 +3,8 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "1.0.0",
-  "description": "A robust CLI for accessibility testing and autofix with axe-core, featuring advanced autofix logic and reliable unit tests.",
+  "version": "1.1.0",
+  "description": "A robust, developer-friendly CLI for accessibility testing and autofix with axe-core. Features advanced autofix logic, clear output, safe file handling, and extensive tests.",
   "main": "src/index.js",
   "bin": {
     "a11y-check": "./bin/index.js"
@@ -40,7 +40,6 @@
     "node": ">=14.0.0"
   },
   "dependencies": {
-    "axe-core": "^4.10.3",
     "canvas": "^3.2.0",
     "chalk": "^4.1.2",
     "commander": "^14.0.1",
@@ -49,6 +48,7 @@
     "node-fetch": "^2.7.0"
   },
   "devDependencies": {
+    "axe-core": "^4.10.3",
     "eslint": "^9.36.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",

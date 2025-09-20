@@ -274,13 +274,78 @@ class AccessibilityChecker {
   }
 
   async autofix(dom, violations, logFix, dryRun = false) {
+    const document = dom.window.document;
+    let fixes = [];
+    // Move <h1> and other main content inside <main> if not already contained
+    const main = document.querySelector('main');
+    if (main) {
+      // Find all <h1> not inside <main>
+      const h1s = Array.from(document.querySelectorAll('h1'));
+      h1s.forEach((h1) => {
+        if (!main.contains(h1)) {
+          main.appendChild(h1);
+          fixes.push({ type: 'move-h1-into-main', selector: 'h1' });
+          logFix('Moved <h1> inside <main> to satisfy landmark/region rule');
+        }
+      });
+      // Optionally, move other main content as needed
+    }
+    const head = document.head || document.getElementsByTagName('head')[0];
+    // Always ensure <title>
+    let title = head ? head.querySelector('title') : null;
+    if (!title) {
+      title = document.createElement('title');
+      title.textContent = 'Accessible Page';
+      if (head) {
+        head.appendChild(title);
+        fixes.push({ type: 'title', selector: 'title' });
+        logFix('Added missing <title> to <head>');
+      }
+    } else if (!title.textContent || title.textContent.trim() === '') {
+      title.textContent = 'Accessible Page';
+      fixes.push({ type: 'title', selector: 'title' });
+      logFix('Filled empty <title> in <head>');
+    }
+
+    // Always ensure <html lang>
+    const html = document.documentElement;
+    if (
+      html &&
+      (!html.hasAttribute('lang') ||
+        html.getAttribute('lang') === '' ||
+        html.getAttribute('lang') == null)
+    ) {
+      html.setAttribute('lang', 'en');
+      fixes.push({ type: 'lang', selector: 'html' });
+      logFix('Added or fixed lang="en" on <html>');
+    }
+
+    // Always ensure <main>
+    const mains = document.getElementsByTagName('main');
+    if (mains.length === 0) {
+      const main = document.createElement('main');
+      main.id = 'main';
+      main.textContent = 'Main content';
+      document.body.appendChild(main);
+      fixes.push({ type: 'main', selector: 'main' });
+      logFix('Added <main> landmark to document');
+    }
+
+    // Always ensure <h1>
+    const h1s = document.getElementsByTagName('h1');
+    if (h1s.length === 0) {
+      const h1 = document.createElement('h1');
+      h1.textContent = 'Main Heading';
+      document.body.insertBefore(h1, document.body.firstChild);
+      fixes.push({ type: 'heading', selector: 'h1' });
+      logFix('Added missing <h1> to document');
+    }
     logFix(
       `[autofix-debug] autofix called. Violation ids: ${violations.map((v) => v.id).join(', ')}`
     );
     // Advanced autofix: context-aware DOM fixes for common issues
     // This is a scaffold: add more rules as needed
-    let fixes = [];
-    const { document } = dom.window;
+    // ...existing code...
     for (const v of violations) {
       if (v.id === 'image-alt') {
         // Add missing alt attributes to images

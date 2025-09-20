@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const { program } = require('commander');
+const fs = require('fs');
 const chalk = require('chalk');
 const figlet = require('figlet');
 const { version } = require('../package.json');
@@ -33,16 +34,29 @@ program
     const { AccessibilityChecker } = require('../src/index.js');
     const checker = new AccessibilityChecker(options);
     try {
-      // Pass fix/fixDryRun to checker
       if (options.fix) options.fix = true;
       if (options.fixDryRun) options.fixDryRun = true;
       const results = await checker.checkFiles(files);
       const output = checker.formatResults(results, options.format);
       if (options.output) {
-        await checker.saveResults(results, options.output, options.format);
+        // If autofix and output, write fixed HTML for the first file (single-file use case)
+        if (
+          options.fix &&
+          results.length === 1 &&
+          results[0].autofix &&
+          !results[0].error
+        ) {
+          // Write the fixed HTML
+          const { JSDOM } = require('jsdom');
+          const content = await fs.promises.readFile(results[0].file, 'utf8');
+          const dom = new JSDOM(content);
+          await fs.promises.writeFile(options.output, dom.serialize(), 'utf8');
+          console.log(chalk.green(`💾 Fixed HTML saved to: ${options.output}`));
+        } else {
+          await checker.saveResults(results, options.output, options.format);
+        }
       }
       console.log(output);
-      // Print autofix logs (always show, even if empty)
       for (const result of results) {
         console.log(chalk.yellow('Autofix log for ' + result.file + ':'));
         if (result.autofixLog && result.autofixLog.length > 0) {

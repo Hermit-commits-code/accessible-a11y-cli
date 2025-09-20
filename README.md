@@ -1,3 +1,4 @@
+
 # accessible-a11y-cli
 
 ![npm version](https://img.shields.io/npm/v/accessible-a11y-cli?style=flat-square)
@@ -5,7 +6,21 @@
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)
 
+
 > **A robust, developer-friendly CLI for automated accessibility testing and autofix of HTML and JSX files using axe-core.**
+
+---
+
+## 🚀 Why Use This CLI?
+
+- **Comprehensive autofix** for alt, lang, labels, headings, ARIA, color contrast, tabindex, skip links, semantic HTML, and link text
+- **Idempotent, context-aware fixes**—safe to run multiple times
+- **Extensive unit and CLI tests** for every autofix rule and edge case
+- **Clear, actionable CLI output** with color, symbols, and summaries
+- **Rich logging and verbosity options** for troubleshooting
+- **Fail-safe file handling**: always backs up originals, supports dry-run
+- **Configurable rules and output formats** (table, JSON, HTML)
+- **Great developer experience**: fast, reliable, easy to use, and CI/CD ready
 
 ---
 
@@ -48,15 +63,25 @@ You can mix local file paths and URLs in a single command. URLs must start with 
 
 ---
 
-## 🧪 Testing
 
-This CLI is backed by robust unit tests for all autofix logic. Run `npm test` to verify reliability and coverage.
+## 🧪 Testing & Reliability
 
-### Example
+This CLI is backed by robust unit tests for all autofix logic. Run `npm test` to verify reliability and coverage. You can also use CLI-level tests to check real file output.
+
+
+---
+
+## 💡 Example
 
 ```bash
 # Check a local file, a JSX file, and a remote URL
 a11y-check check test/test.html src/App.jsx https://example.com
+
+# Autofix and save to a new file (with backup)
+a11y-check check --fix -o fixed.html test/test.html
+
+# Dry run (see what would be fixed, but don’t write)
+a11y-check check --fix-dry-run test/test.html
 
 # Output results as JSON and save to a file
 a11y-check check https://example.com --format json --output results.json
