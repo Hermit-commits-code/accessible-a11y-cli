@@ -5,7 +5,16 @@
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)
 
-> **A fast, user-friendly CLI for automated accessibility testing of HTML and JSX files using axe-core.**
+> **A robust, developer-friendly CLI for automated accessibility testing and autofix of HTML and JSX files using axe-core.**
+
+---
+
+## 🚀 What's New in 1.0.0
+
+- Advanced autofix logic for alt, lang, labels, headings, ARIA, color contrast, tabindex, skip links, semantic HTML, and link text
+- Comprehensive, reliable unit tests for all autofix logic
+- Cleaned up legacy and redundant test files for maintainability
+- Ready for production and open source use
 
 ---
 
@@ -31,11 +40,17 @@ a11y-check check path/to/file.html path/to/other.jsx https://example.com
 
 - `-f, --format <type>` Output format: `table` (default), `json`, or `html`
 - `-o, --output <file>` Save results to a file
-- `--fix` Attempt to auto-fix common accessibility issues (adds missing alt/lang, more coming)
+- `--fix` Attempt to auto-fix common accessibility issues (alt, lang, labels, headings, ARIA, color contrast, tabindex, skip links, semantic HTML, link text)
 - `--fix-dry-run` Show what would be fixed without changing files
 - `--verbose` Verbose output
 
 You can mix local file paths and URLs in a single command. URLs must start with `http://` or `https://`.
+
+---
+
+## 🧪 Testing
+
+This CLI is backed by robust unit tests for all autofix logic. Run `npm test` to verify reliability and coverage.
 
 ### Example
 

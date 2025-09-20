@@ -1,3 +1,18 @@
+# [1.0.0] - 2025-09-20
+
+### Major
+
+- Milestone release: robust, developer-friendly CLI for accessibility testing and autofix
+- Advanced autofix logic for alt, lang, labels, headings, ARIA, color contrast, tabindex, skip links, semantic HTML, and link text
+- Comprehensive, reliable unit tests for all autofix logic
+- Cleaned up legacy and redundant test files for maintainability
+- Ready for production and open source use
+
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.5.0] - 2025-09-20
 
@@ -16,12 +31,6 @@
 - Automatically adds missing `alt` and `lang` attributes (more autofixes coming)
 - Backs up original files before fixing
 - Improved CLI output for autofix actions
-
-# Changelog
-
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.3.0] - 2025-09-20
 

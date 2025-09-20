@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="UTF-8">
+  <title>Robust A11y Test</title>
+  <style>
+    .low-contrast { color: #fff; background: #fff; }
+  </style>
+</head>
+<body>
+  <!-- Missing lang on <html> -->
+  <!-- Missing alt on image -->
+  <img src="logo.png">
+
+  <!-- Missing label for input -->
+  <form>
+    <input type="text" id="test-input">
+  </form>
+
+  <!-- Heading order issue: no h1, only h2 and h3 -->
+  <h2>Subheading</h2>
+  <h3>Another Subheading</h3>
+
+  <!-- ARIA role issue: no role on section -->
+  <section></section>
+
+  <!-- Low color contrast -->
+  <span class="low-contrast">Text</span>
+
+  <!-- Positive tabindex -->
+  <button tabindex="2">Btn</button>
+
+  <!-- No skip link -->
+  <!-- No <main> landmark -->
+  <div>Content</div>
+
+  <!-- Empty link text -->
+  <a href="#"></a>
+</body>
+</html>
+  </body>
+</html>

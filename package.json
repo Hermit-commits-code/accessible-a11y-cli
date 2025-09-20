@@ -3,8 +3,8 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "0.5.0",
-  "description": "A command-line tool for accessibility testing using axe-core",
+  "version": "1.0.0",
+  "description": "A robust CLI for accessibility testing and autofix with axe-core, featuring advanced autofix logic and reliable unit tests.",
   "main": "src/index.js",
   "bin": {
     "a11y-check": "./bin/index.js"
@@ -42,7 +42,7 @@
   "dependencies": {
     "axe-core": "^4.10.3",
     "canvas": "^3.2.0",
-    "chalk": "^5.6.2",
+    "chalk": "^4.1.2",
     "commander": "^14.0.1",
     "figlet": "^1.9.3",
     "jsdom": "^27.0.0",
