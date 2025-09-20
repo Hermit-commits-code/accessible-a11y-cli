@@ -1,20 +1,18 @@
-<!DOCTYPE html>
-<html lang="">
-<head>
+<!DOCTYPE html><html lang="en"><head>
   <meta charset="UTF-8">
   <title>Robust A11y Test</title>
   <style>
     .low-contrast { color: #fff; background: #fff; }
   </style>
-</head>
-<body>
+<style>* { pointer-events: all }</style></head>
+<body><h1>Main Heading</h1>
   <!-- Missing lang on <html> -->
   <!-- Missing alt on image -->
-  <img src="logo.png">
+  <img src="logo.png" alt="">
 
   <!-- Missing label for input -->
   <form>
-    <input type="text" id="test-input">
+    <label for="test-input">Label</label><input type="text" id="test-input">
   </form>
 
   <!-- Heading order issue: no h1, only h2 and h3 -->
@@ -28,15 +26,16 @@
   <span class="low-contrast">Text</span>
 
   <!-- Positive tabindex -->
-  <button tabindex="2">Btn</button>
+  <button>Btn</button>
 
   <!-- No skip link -->
   <!-- No <main> landmark -->
   <div>Content</div>
 
   <!-- Empty link text -->
-  <a href="#"></a>
-</body>
-</html>
-  </body>
-</html>
+  <a href="#">Descriptive link</a>
+
+
+  
+
+<main id="main">Main content</main></body></html>

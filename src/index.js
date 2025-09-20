@@ -8,9 +8,12 @@ class AccessibilityChecker {
     this.options = {
       format: 'table',
       verbose: false,
+      debug: false,
       fix: false,
       ...options,
     };
+    // --debug implies verbose
+    if (this.options.debug) this.options.verbose = true;
   }
 
   async checkFiles(inputs) {
@@ -277,6 +280,7 @@ class AccessibilityChecker {
     const document = dom.window.document;
     let fixes = [];
     // Move <h1> and other main content inside <main> if not already contained
+    const verbose = this.options.verbose;
     const main = document.querySelector('main');
     if (main) {
       // Find all <h1> not inside <main>
@@ -352,15 +356,16 @@ class AccessibilityChecker {
         for (const node of v.nodes) {
           for (const selector of node.target) {
             const imgs = document.querySelectorAll(selector);
-            logFix(
-              `[autofix-debug] Checking selector: ${selector}, found ${imgs.length} element(s)`
-            );
+            if (verbose)
+              logFix(
+                `[autofix-debug] Checking selector: ${selector}, found ${imgs.length} element(s)`
+              );
             imgs.forEach((img) => {
               if (!img.hasAttribute('alt')) {
                 img.setAttribute('alt', '');
                 fixes.push({ type: 'alt', selector });
                 logFix(`Added missing alt attribute to: ${selector}`);
-              } else {
+              } else if (verbose) {
                 logFix(`[autofix-debug] alt already present for: ${selector}`);
               }
             });
@@ -379,7 +384,7 @@ class AccessibilityChecker {
           html.setAttribute('lang', 'en');
           fixes.push({ type: 'lang', selector: 'html' });
           logFix('Added or fixed lang="en" on <html>');
-        } else {
+        } else if (verbose) {
           logFix(
             '[autofix-debug] lang already present and non-empty for <html>'
           );
@@ -390,9 +395,10 @@ class AccessibilityChecker {
         for (const node of v.nodes) {
           for (const selector of node.target) {
             const fields = document.querySelectorAll(selector);
-            logFix(
-              `[autofix-debug] Checking selector: ${selector} for label, found ${fields.length} element(s)`
-            );
+            if (verbose)
+              logFix(
+                `[autofix-debug] Checking selector: ${selector} for label, found ${fields.length} element(s)`
+              );
             fields.forEach((field, idx) => {
               if (!field.id) {
                 field.id = `a11y-autofix-field-${Date.now()}-${idx}`;
@@ -419,6 +425,8 @@ class AccessibilityChecker {
           document.body.insertBefore(h1, document.body.firstChild);
           fixes.push({ type: 'heading', selector: 'h1' });
           logFix('Added missing <h1> to document');
+        } else if (verbose) {
+          logFix('[autofix-debug] h1 already present in document');
         }
       }
 
@@ -427,9 +435,10 @@ class AccessibilityChecker {
         for (const node of v.nodes) {
           for (const selector of node.target) {
             const elements = document.querySelectorAll(selector);
-            logFix(
-              `[autofix-debug] Checking selector: ${selector} for ARIA, found ${elements.length} element(s)`
-            );
+            if (verbose)
+              logFix(
+                `[autofix-debug] Checking selector: ${selector} for ARIA, found ${elements.length} element(s)`
+              );
             elements.forEach((el) => {
               if (!el.hasAttribute('role')) {
                 el.setAttribute('role', 'region');

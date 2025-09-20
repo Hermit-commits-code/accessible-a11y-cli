@@ -30,8 +30,11 @@ program
   .option('--fix', 'attempt to auto-fix common accessibility issues')
   .option('--fix-dry-run', 'show what would be fixed without changing files')
   .option('--verbose', 'verbose output')
+  .option('--debug', 'debug output (implies verbose)')
   .action(async (files, options) => {
     const { AccessibilityChecker } = require('../src/index.js');
+    // Support --debug as a superset of --verbose
+    if (options.debug) options.verbose = true;
     const checker = new AccessibilityChecker(options);
     try {
       if (options.fix) options.fix = true;
@@ -65,6 +68,11 @@ program
         console.log(chalk.yellow('🛠️  Autofix log for'), fileLabel + ':');
         if (result.autofixLog && result.autofixLog.length > 0) {
           for (const msg of result.autofixLog) {
+            // If verbose/debug, show all log lines, including context
+            if (options.verbose && msg.startsWith('[autofix-debug]')) {
+              console.log(chalk.magenta('  🐞 ' + msg));
+              continue;
+            }
             if (
               msg.toLowerCase().includes('added') ||
               msg.toLowerCase().includes('fixed')
@@ -78,7 +86,9 @@ program
               totalSkipped++;
               console.log(chalk.yellow('  ⚠ ' + msg));
             } else {
-              console.log(chalk.gray('  ' + msg));
+              if (options.verbose) {
+                console.log(chalk.gray('  ' + msg));
+              }
             }
           }
         } else {

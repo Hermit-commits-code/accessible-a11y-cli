@@ -9,18 +9,20 @@
 
 ---
 
-## 🚀 Why Use This CLI?
-
 - **Comprehensive autofix** for alt, lang, labels, headings, ARIA, color contrast, tabindex, skip links, semantic HTML, and link text
 - **Idempotent, context-aware fixes**—safe to run multiple times
 - **Extensive unit and CLI tests** for every autofix rule and edge case
 - **Clear, actionable CLI output** with color, symbols, and summaries
 - **Rich logging and verbosity options** for troubleshooting
-- **Fail-safe file handling**: always backs up originals, supports dry-run
+- **Fail-safe file handling**: always backs up originals before fixing, and supports dry-run by default
 - **Configurable rules and output formats** (table, JSON, HTML)
 - **Great developer experience**: fast, reliable, easy to use, and CI/CD ready
 
 ---
+
+## 🚀 What's New in 1.1.3
+
+- Fail-safe file handling: always creates a backup before fixing, and --fix-dry-run is now the default for --fix
 
 ## 🚀 What's New in 1.1.1
 
