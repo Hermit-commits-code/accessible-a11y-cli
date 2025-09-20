@@ -1,0 +1,46 @@
+{
+  "name": "@joecodesallday/accessible-a11y-cli",
+  "version": "0.1.0",
+  "description": "A command-line tool for accessibility testing using axe-core",
+  "main": "src/index.js",
+  "bin": {
+    "a11y-check": "./bin/index.js"
+  },
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint src/ bin/ test/",
+    "lint:fix": "eslint src/ bin/ test/ --fix",
+    "format": "prettier --write src/ bin/ test/",
+    "start": "node bin/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hermit-commits-code/accessible-a11y-cli.git"
+  },
+  "keywords": [
+    "accessibility",
+    "a11y",
+    "axe",
+    "cli",
+    "testing",
+    "html",
+    "jsx",
+    "react"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Hermit-commits-code/accessible-a11y-cli/issues"
+  },
+  "homepage": "https://github.com/Hermit-commits-code/accessible-a11y-cli#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "axe-core": "^4.10.3",
+    "chalk": "^5.6.2",
+    "commander": "^14.0.1",
+    "figlet": "^1.9.3",
+    "jsdom": "^27.0.0"
+  }
+}
