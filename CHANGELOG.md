@@ -1,3 +1,12 @@
+## [0.4.0] - 2025-09-20
+
+### Added
+
+- Advanced autofix support: `--fix` and `--fix-dry-run` flags
+- Automatically adds missing `alt` and `lang` attributes (more autofixes coming)
+- Backs up original files before fixing
+- Improved CLI output for autofix actions
+
 # Changelog
 
 All notable changes to this project will be documented in this file.

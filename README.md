@@ -31,7 +31,8 @@ a11y-check check path/to/file.html path/to/other.jsx https://example.com
 
 - `-f, --format <type>` Output format: `table` (default), `json`, or `html`
 - `-o, --output <file>` Save results to a file
-- `--fix` Attempt to auto-fix common issues
+- `--fix` Attempt to auto-fix common accessibility issues (adds missing alt/lang, more coming)
+- `--fix-dry-run` Show what would be fixed without changing files
 - `--verbose` Verbose output
 
 You can mix local file paths and URLs in a single command. URLs must start with `http://` or `https://`.
@@ -53,7 +54,7 @@ a11y-check check https://example.com --format json --output results.json
 - [x] Parse HTML/JSX and report issues in readable format
 - [x] Support CLI flags: format, fix, output
 - [x] Add URL scanning support
-- [ ] Add autofix for common issues
+- [x] Add autofix for common issues (alt, lang, more coming)
 - [ ] Markdown/code output support
 - [ ] CI/CD integration and npm release
 - [ ] Collect feedback and iterate

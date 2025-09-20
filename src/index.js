@@ -179,6 +179,25 @@ class AccessibilityChecker {
       );
     });
 
+    let autofixLog = [];
+    let fixes = [];
+    if (this.options.fix || this.options.fixDryRun) {
+      const logFix = (msg) => autofixLog.push(msg);
+      fixes = await this.autofix(
+        dom,
+        results.violations,
+        logFix,
+        this.options.fixDryRun
+      );
+      if (fixes.length > 0) {
+        if (this.options.fix) {
+          // Backup original file
+          await fs.copyFile(filePath, filePath + '.bak');
+          await fs.writeFile(filePath, dom.serialize(), 'utf8');
+        }
+      }
+    }
+
     // Clean up globals
     delete global.window;
     delete global.document;
@@ -192,6 +211,8 @@ class AccessibilityChecker {
       passes: results.passes,
       incomplete: results.incomplete,
       inapplicable: results.inapplicable,
+      autofix: fixes,
+      autofixLog,
     };
   }
 
@@ -251,6 +272,39 @@ class AccessibilityChecker {
     const formattedResults = this.formatResults(results, format);
     await fs.writeFile(outputPath, formattedResults, 'utf8');
     console.log(chalk.green(`💾 Results saved to: ${outputPath}`));
+  }
+
+  async autofix(dom, violations, logFix, dryRun = false) {
+    // Advanced autofix: context-aware DOM fixes for common issues
+    // This is a scaffold: add more rules as needed
+    let fixes = [];
+    const { document } = dom.window;
+    for (const v of violations) {
+      if (v.id === 'image-alt') {
+        // Add missing alt attributes to images
+        for (const node of v.nodes) {
+          for (const selector of node.target) {
+            const img = document.querySelector(selector);
+            if (img && !img.hasAttribute('alt')) {
+              img.setAttribute('alt', '');
+              fixes.push({ type: 'alt', selector });
+              logFix(`Added missing alt attribute to: ${selector}`);
+            }
+          }
+        }
+      }
+      if (v.id === 'html-has-lang') {
+        // Add lang attribute to <html>
+        const html = document.documentElement;
+        if (html && !html.hasAttribute('lang')) {
+          html.setAttribute('lang', 'en');
+          fixes.push({ type: 'lang', selector: 'html' });
+          logFix('Added lang="en" to <html>');
+        }
+      }
+      // Add more advanced autofix rules here (labels, headings, ARIA, etc.)
+    }
+    return fixes;
   }
 }
 

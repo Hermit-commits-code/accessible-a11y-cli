@@ -27,18 +27,31 @@ program
   .description('Run accessibility checks on HTML/JSX files or URLs')
   .option('-f, --format <type>', 'output format (json, table, html)', 'table')
   .option('-o, --output <file>', 'output file path')
-  .option('--fix', 'attempt to auto-fix common issues')
+  .option('--fix', 'attempt to auto-fix common accessibility issues')
+  .option('--fix-dry-run', 'show what would be fixed without changing files')
   .option('--verbose', 'verbose output')
   .action(async (files, options) => {
     const { AccessibilityChecker } = require('../src/index.js');
     const checker = new AccessibilityChecker(options);
     try {
+      // Pass fix/fixDryRun to checker
+      if (options.fix) options.fix = true;
+      if (options.fixDryRun) options.fixDryRun = true;
       const results = await checker.checkFiles(files);
       const output = checker.formatResults(results, options.format);
       if (options.output) {
         await checker.saveResults(results, options.output, options.format);
       }
       console.log(output);
+      // Print autofix logs if any
+      for (const result of results) {
+        if (result.autofixLog && result.autofixLog.length > 0) {
+          console.log(chalk.yellow('Autofix log for ' + result.file + ':'));
+          for (const msg of result.autofixLog) {
+            console.log(chalk.yellow('  ' + msg));
+          }
+        }
+      }
     } catch (err) {
       console.error(
         chalk.red('❌ Error running accessibility checks:'),
