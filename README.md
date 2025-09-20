@@ -1,11 +1,9 @@
-
 # accessible-a11y-cli
 
 ![npm version](https://img.shields.io/npm/v/accessible-a11y-cli?style=flat-square)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/Hermit-commits-code/accessible-a11y-cli/ci.yml?branch=main&style=flat-square)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)
-
 
 > **A robust, developer-friendly CLI for automated accessibility testing and autofix of HTML and JSX files using axe-core.**
 
@@ -23,6 +21,10 @@
 - **Great developer experience**: fast, reliable, easy to use, and CI/CD ready
 
 ---
+
+## 🚀 What's New in 1.1.1
+
+- CLI output and UX improvements: clearer logs, more context in autofix logs, improved error/warning messages, and enhanced summary formatting
 
 ## 🚀 What's New in 1.0.0
 
@@ -63,11 +65,9 @@ You can mix local file paths and URLs in a single command. URLs must start with 
 
 ---
 
-
 ## 🧪 Testing & Reliability
 
 This CLI is backed by robust unit tests for all autofix logic. Run `npm test` to verify reliability and coverage. You can also use CLI-level tests to check real file output.
-
 
 ---
 

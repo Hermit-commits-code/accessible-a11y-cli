@@ -57,16 +57,41 @@ program
         }
       }
       console.log(output);
+      let totalFixed = 0;
+      let totalSkipped = 0;
+      let totalFiles = results.length;
       for (const result of results) {
-        console.log(chalk.yellow('Autofix log for ' + result.file + ':'));
+        const fileLabel = chalk.cyan.bold(result.file);
+        console.log(chalk.yellow('🛠️  Autofix log for'), fileLabel + ':');
         if (result.autofixLog && result.autofixLog.length > 0) {
           for (const msg of result.autofixLog) {
-            console.log(chalk.yellow('  ' + msg));
+            if (
+              msg.toLowerCase().includes('added') ||
+              msg.toLowerCase().includes('fixed')
+            ) {
+              totalFixed++;
+              console.log(chalk.green('  ✔ ' + msg));
+            } else if (
+              msg.toLowerCase().includes('skipped') ||
+              msg.toLowerCase().includes('already')
+            ) {
+              totalSkipped++;
+              console.log(chalk.yellow('  ⚠ ' + msg));
+            } else {
+              console.log(chalk.gray('  ' + msg));
+            }
           }
         } else {
+          totalSkipped++;
           console.log(chalk.gray('  (No autofix actions performed)'));
         }
       }
+      // Summary
+      console.log();
+      console.log(chalk.bold('Summary:'));
+      console.log(chalk.green(`  ✔ Fixed: ${totalFixed}`));
+      console.log(chalk.yellow(`  ⚠ Skipped/No action: ${totalSkipped}`));
+      console.log(chalk.cyan(`  📄 Files processed: ${totalFiles}`));
     } catch (err) {
       console.error(
         chalk.red('❌ Error running accessibility checks:'),
