@@ -1,41 +1,76 @@
 <!DOCTYPE html><html lang="en"><head>
-  <meta charset="UTF-8">
-  <title>Robust A11y Test</title>
-  <style>
-    .low-contrast { color: #fff; background: #fff; }
-  </style>
-<style>* { pointer-events: all }</style><style>* { pointer-events: all }</style></head>
-<body>
-  <!-- Missing lang on <html> -->
-  <!-- Missing alt on image -->
-  <img src="logo.png" alt="">
+    <meta charset="UTF-8">
+    <title>Accessible Page</title>
+    <style>
+      .low-contrast {
+        color: #fff;
+        background: #fff;
+      }
+      .bad-outline {
+        outline: none;
+      }
+    </style>
+  <style>* { pointer-events: all }</style></head>
+  <body><h1>Main Heading</h1>
+    <!-- Missing lang on <html> -->
+    <!-- Missing alt on image -->
+    <img src="logo.png" alt="">
 
-  <!-- Missing label for input -->
-  <form>
-    <label for="test-input">Label</label><input type="text" id="test-input">
-  </form>
+    <!-- Missing label for input -->
+    <form>
+      <label for="test-input">Label</label><input type="text" id="test-input">
+      <label for="cb1">Label</label><input type="checkbox" id="cb1">
+    </form>
 
-  <!-- Heading order issue: no h1, only h2 and h3 -->
-  <h2>Subheading</h2>
-  <h3>Another Subheading</h3>
+    <!-- Heading order issue: no h1, only h2 and h3 -->
+    <h2>Subheading</h2>
+    <h3>Another Subheading</h3>
 
-  <!-- ARIA role issue: no role on section -->
-  <section></section>
+    <!-- ARIA role issue: no role on section -->
+    <section></section>
 
-  <!-- Low color contrast -->
-  <span class="low-contrast">Text</span>
+    <!-- Low color contrast -->
+    <span class="low-contrast">Text</span>
 
-  <!-- Positive tabindex -->
-  <button>Btn</button>
+    <!-- Positive tabindex -->
+    <button tabindex="2">Btn</button>
 
-  <!-- No skip link -->
-  <!-- No <main> landmark -->
-  <div>Content</div>
+    <!-- No skip link -->
+    <!-- No <main> landmark -->
+    <div>Content</div>
 
-  <!-- Empty link text -->
-  <a href="#">Descriptive link</a>
+    <!-- Empty link text -->
+    <a href="#"></a>
 
+    <!-- Multiple links with same text -->
+    <a href="#">Click here</a>
+    <a href="#">Click here</a>
 
+    <!-- Button with no accessible name -->
+    <button></button>
+
+    <!-- Table missing headers -->
+    <table>
+      <tbody><tr>
+        <td>Data</td>
+      </tr>
+    </tbody></table>
+
+    <!-- List with no list items -->
+    <ul></ul>
+
+    <!-- Frame with no title -->
+    <iframe src="about:blank"></iframe>
+
+    <!-- Landmark region overlap -->
+    <nav><main></main></nav>
+
+    <!-- Duplicate IDs -->
+    <div id="dup"></div>
+    <span id="dup"></span>
+
+    <!-- ARIA attribute misuse -->
+    <div aria-label="" aria-hidden="maybe"></div>
   
 
-<main id="main">Main content<h1>Main Heading</h1></main></body></html>
+</body></html>

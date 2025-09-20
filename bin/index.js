@@ -28,17 +28,29 @@ program
   .option('-f, --format <type>', 'output format (json, table, html)', 'table')
   .option('-o, --output <file>', 'output file path')
   .option('--fix', 'attempt to auto-fix common accessibility issues')
-  .option('--fix-dry-run', 'show what would be fixed without changing files')
+  .option(
+    '--fix-dry-run',
+    'show what would be fixed without changing files (default: true when --fix is set)'
+  )
+  .option('--no-fix-dry-run', 'actually write fixes to disk (use with --fix)')
   .option('--verbose', 'verbose output')
   .option('--debug', 'debug output (implies verbose)')
   .action(async (files, options) => {
     const { AccessibilityChecker } = require('../src/index.js');
     // Support --debug as a superset of --verbose
     if (options.debug) options.verbose = true;
+    // Make --fix-dry-run default to true when --fix is set, unless --no-fix-dry-run is specified
+    if (options.fix) {
+      options.fix = true;
+      if (typeof options.fixDryRun === 'undefined') {
+        options.fixDryRun = true;
+      }
+      if (options.noFixDryRun) {
+        options.fixDryRun = false;
+      }
+    }
     const checker = new AccessibilityChecker(options);
     try {
-      if (options.fix) options.fix = true;
-      if (options.fixDryRun) options.fixDryRun = true;
       const results = await checker.checkFiles(files);
       const output = checker.formatResults(results, options.format);
       if (options.output) {

@@ -20,6 +20,11 @@
 
 ---
 
+## 🚀 What's New in 1.1.4
+
+- Expanded robust test file with more accessibility issues for better coverage
+- Improved dry-run default for --fix (now requires --no-fix-dry-run to write changes)
+
 ## 🚀 What's New in 1.1.3
 
 - Fail-safe file handling: always creates a backup before fixing, and --fix-dry-run is now the default for --fix
