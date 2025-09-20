@@ -43,7 +43,7 @@ a11y-check check src/**/*.html --format json --output results.json
 ## 🗺️ Roadmap
 
 - [x] CLI scaffold and project setup
-- [ ] Integrate axe-core for accessibility checks
+- [x] Integrate axe-core for accessibility checks
 - [ ] Parse HTML/JSX and report issues in readable format
 - [ ] Support CLI flags: format, fix, output
 - [ ] Add autofix for common issues

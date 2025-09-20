@@ -1,7 +1,7 @@
-const axe = require("axe-core");
 const fs = require("fs").promises;
 const path = require("path");
-const chalk = require("chalk");
+const { Chalk } = require("chalk");
+const chalk = new Chalk();
 
 class AccessibilityChecker {
   constructor(options = {}) {
@@ -15,9 +15,7 @@ class AccessibilityChecker {
 
   async checkFiles(filePaths) {
     console.log(chalk.blue(`📁 Processing ${filePaths.length} file(s)...`));
-
     const results = [];
-
     for (const filePath of filePaths) {
       try {
         const result = await this.checkFile(filePath);
@@ -28,7 +26,6 @@ class AccessibilityChecker {
         );
       }
     }
-
     return results;
   }
 
@@ -40,11 +37,38 @@ class AccessibilityChecker {
       console.log(chalk.gray(`🔍 Checking: ${filePath}`));
     }
 
-    // Only process HTML files for now
-    if (ext !== ".html" && ext !== ".htm") {
+    let htmlContent = content;
+    if (ext === ".jsx") {
+      try {
+        const babel = require("@babel/core");
+        const reactDomServer = require("react-dom/server");
+        const React = require("react");
+        const transpiled = babel.transformSync(content, {
+          presets: [require.resolve("@babel/preset-react")],
+          filename: filePath,
+        });
+        // eslint-disable-next-line no-eval
+        const Component = eval(
+          transpiled.code +
+            ";module.exports = exports.default || module.exports;"
+        );
+        htmlContent = reactDomServer.renderToStaticMarkup(
+          React.createElement(Component)
+        );
+      } catch (e) {
+        return {
+          file: filePath,
+          error: `Failed to parse JSX: ${e.message}`,
+          violations: [],
+          passes: [],
+          incomplete: [],
+          inapplicable: [],
+        };
+      }
+    } else if (ext !== ".html" && ext !== ".htm") {
       return {
         file: filePath,
-        error: "Unsupported file type (only .html/.htm supported)",
+        error: "Unsupported file type (only .html/.htm/.jsx supported)",
         violations: [],
         passes: [],
         incomplete: [],
@@ -54,12 +78,18 @@ class AccessibilityChecker {
 
     // Use jsdom to create a DOM for axe-core
     const { JSDOM } = require("jsdom");
-    const dom = new JSDOM(content);
+    const dom = new JSDOM(htmlContent);
     const { window } = dom;
 
-    // axe-core expects a global window and document
+    // axe-core expects a global window and document and related classes
     global.window = window;
     global.document = window.document;
+    global.Node = window.Node;
+    global.Element = window.Element;
+    global.HTMLElement = window.HTMLElement;
+
+    // Require axe-core after globals are set
+    const axe = require("axe-core");
 
     // Run axe-core
     const results = await new Promise((resolve, reject) => {
@@ -76,6 +106,9 @@ class AccessibilityChecker {
     // Clean up globals
     delete global.window;
     delete global.document;
+    delete global.Node;
+    delete global.Element;
+    delete global.HTMLElement;
 
     return {
       file: filePath,
@@ -101,19 +134,35 @@ class AccessibilityChecker {
   formatAsTable(results) {
     let output = "\n";
     output += chalk.bold.blue("📊 Accessibility Check Results\n");
-    output += chalk.gray("=" * 50) + "\n\n";
+    output += chalk.gray("=".repeat(50)) + "\n\n";
 
     for (const result of results) {
       output += chalk.bold(`📄 File: ${result.file}\n`);
-      output += chalk.green(`✅ Passes: ${result.passes.length}\n`);
-      output += chalk.red(`❌ Violations: ${result.violations.length}\n`);
-      output += chalk.yellow(`⚠️  Incomplete: ${result.incomplete.length}\n`);
-      output += chalk.gray(
-        `ℹ️  Not applicable: ${result.inapplicable.length}\n`
-      );
-      output += "\n";
+      if (result.error) {
+        output += chalk.red(`  Error: ${result.error}\n\n`);
+        continue;
+      }
+      if (result.violations.length === 0) {
+        output += chalk.green("  No accessibility violations found!\n\n");
+      } else {
+        output += chalk.red(`  Violations: ${result.violations.length}\n`);
+        for (const v of result.violations) {
+          output += chalk.red(`    [${v.id}] ${v.help}\n`);
+          output += chalk.gray(`      Impact: ${v.impact}\n`);
+          output += chalk.gray(`      Description: ${v.description}\n`);
+          output += chalk.gray(`      Help: ${v.helpUrl}\n`);
+          for (const node of v.nodes) {
+            output += chalk.yellow(
+              `      Selector: ${node.target.join(", ")}\n`
+            );
+            output += chalk.gray(
+              `      Failure Summary: ${node.failureSummary || "N/A"}\n`
+            );
+          }
+        }
+        output += "\n";
+      }
     }
-
     return output;
   }
 
