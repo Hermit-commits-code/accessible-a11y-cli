@@ -20,21 +20,24 @@
 
 ---
 
-## 🚀 What's New in 1.4.0
+## 🚀 What's New in 1.5.0
 
 **Major autofix engine upgrade!**
 
 - Now supports 8 high-impact autofix rules:
-  1.  Add/fix `<html lang>`
-  2.  Add/fix `<title>`
-  3.  Add `<main>` landmark
-  4.  Add `<h1>` heading
-  5.  Add missing `alt` attributes to images
-  6.  Add missing accessible name to buttons/links
-  7.  Add table headers if missing
-  8.  Fix duplicate IDs
+  1. Add/fix `<html lang>`
+  2. Add/fix `<title>`
+  3. Add `<main>` landmark
+  4. Add `<h1>` heading
+  5. Add missing `alt` attributes to images
+  6. Add missing accessible name to buttons/links
+  7. Add table headers if missing
+  8. Fix duplicate IDs
+- Expanded and improved unit and integration tests for all new autofix rules
 - Markdown output support for both results and autofix logs (`--format markdown`)
 - All output formats (table, JSON, HTML, Markdown) are now robust and fully tested
+
+---
 
 ## 🚀 What's New in 1.3.1
 
@@ -67,7 +70,7 @@
 ## 🗺️ Roadmap
 
 - [x] Advanced autofix logic for accessibility issues
-- [x] Robust CLI output and logging (table, JSON, HTML)
+- [x] Robust CLI output and logging (table, JSON, HTML, Markdown)
 - [x] Fail-safe file handling and dry-run
 - [x] Configurable rules and output formats
 - [x] Markdown output support for results and autofix logs
