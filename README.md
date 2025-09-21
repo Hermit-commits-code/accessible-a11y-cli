@@ -22,7 +22,18 @@
 
 ## 🚀 What's New in 1.4.0
 
-- **Markdown output support** for both results and autofix logs (`--format markdown`)
+**Major autofix engine upgrade!**
+
+- Now supports 8 high-impact autofix rules:
+  1.  Add/fix `<html lang>`
+  2.  Add/fix `<title>`
+  3.  Add `<main>` landmark
+  4.  Add `<h1>` heading
+  5.  Add missing `alt` attributes to images
+  6.  Add missing accessible name to buttons/links
+  7.  Add table headers if missing
+  8.  Fix duplicate IDs
+- Markdown output support for both results and autofix logs (`--format markdown`)
 - All output formats (table, JSON, HTML, Markdown) are now robust and fully tested
 
 ## 🚀 What's New in 1.3.1
@@ -92,7 +103,7 @@ a11y-check check path/to/file.html path/to/other.jsx https://example.com
 
 - `-f, --format <type>` Output format: `table` (default), `json`, or `html`
 - `-o, --output <file>` Save results to a file
-- `--fix` Attempt to auto-fix common accessibility issues (alt, lang, labels, headings, ARIA, color contrast, tabindex, skip links, semantic HTML, link text)
+- `--fix` Attempt to auto-fix common accessibility issues (now covers: lang, title, main, h1, image alt, button/link name, table headers, duplicate IDs)
 - `--fix-dry-run` Show what would be fixed without changing files
 - `--verbose` Verbose output
 

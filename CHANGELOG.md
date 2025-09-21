@@ -1,3 +1,22 @@
+# [1.5.0] - 2025-09-21
+
+### Added
+
+- Major autofix engine upgrade: now supports 8 high-impact autofix rules:
+  1.  Add/fix <html lang>
+  2.  Add/fix <title>
+  3.  Add <main> landmark
+  4.  Add <h1> heading
+  5.  Add missing alt attributes to images
+  6.  Add missing accessible name to buttons/links
+  7.  Add table headers if missing
+  8.  Fix duplicate IDs
+- Expanded and improved unit and integration tests for all new autofix rules
+
+### Changed
+
+- README and documentation updated to reflect new autofix coverage and usage
+
 # [1.4.3] - 2025-09-21
 
 ### Changed

@@ -453,11 +453,18 @@ class AccessibilityChecker {
       `[autofix-debug] autofix called. Violation ids: ${violations.map((v) => v.id).join(', ')}`
     );
     // Advanced autofix: context-aware DOM fixes for common issues
-    // This is a scaffold: add more rules as needed
-    // ...existing code...
+    // 1. Add/fix <html lang>
+    // 2. Add/fix <title>
+    // 3. Add <main> landmark
+    // 4. Add <h1> heading
+    // 5. Add missing alt attributes to images
+    // 6. Add missing accessible name to buttons/links
+    // 7. Add table headers if missing
+    // 8. Fix duplicate IDs
+
+    // 5. Add missing alt attributes to images (axe: image-alt)
     for (const v of violations) {
       if (v.id === 'image-alt') {
-        // Add missing alt attributes to images
         for (const node of v.nodes) {
           for (const selector of node.target) {
             const imgs = document.querySelectorAll(selector);
@@ -477,8 +484,78 @@ class AccessibilityChecker {
           }
         }
       }
+      // 6. Add missing accessible name to buttons/links (axe: button-name, link-name)
+      if (v.id === 'button-name' || v.id === 'link-name') {
+        for (const node of v.nodes) {
+          for (const selector of node.target) {
+            const elements = document.querySelectorAll(selector);
+            elements.forEach((el) => {
+              // If no text content or aria-label, add aria-label
+              if (!el.textContent.trim() && !el.hasAttribute('aria-label')) {
+                el.setAttribute('aria-label', 'Accessible Label');
+                fixes.push({ type: 'aria-label', selector });
+                logFix(`Added aria-label to: ${selector}`);
+              }
+            });
+          }
+        }
+      }
+      // 7. Add table headers if missing (axe: table-headers)
+      if (v.id === 'table-headers') {
+        for (const node of v.nodes) {
+          for (const selector of node.target) {
+            const tables = document.querySelectorAll(selector);
+            tables.forEach((table) => {
+              const hasTh = table.querySelector('th');
+              if (!hasTh) {
+                const firstRow = table.querySelector('tr');
+                if (firstRow) {
+                  const cells = firstRow.querySelectorAll('td');
+                  cells.forEach((cell) => {
+                    const th = document.createElement('th');
+                    th.textContent = 'Header';
+                    cell.parentNode.replaceChild(th, cell);
+                  });
+                  fixes.push({ type: 'table-header', selector });
+                  logFix(`Added <th> to first row of table: ${selector}`);
+                }
+              }
+            });
+          }
+        }
+      }
+      // 8. Fix duplicate IDs (axe: duplicate-id)
+      if (v.id === 'duplicate-id') {
+        const seen = new Set();
+        for (const node of v.nodes) {
+          for (const selector of node.target) {
+            const els = document.querySelectorAll(selector);
+            els.forEach((el) => {
+              const id = el.getAttribute('id');
+              if (id) {
+                if (seen.has(id)) {
+                  const newId =
+                    id + '-' + Math.random().toString(36).slice(2, 8);
+                  el.setAttribute('id', newId);
+                  fixes.push({
+                    type: 'duplicate-id',
+                    selector,
+                    oldId: id,
+                    newId,
+                  });
+                  logFix(
+                    `Fixed duplicate id: ${id} -> ${newId} on ${selector}`
+                  );
+                } else {
+                  seen.add(id);
+                }
+              }
+            });
+          }
+        }
+      }
+      // 1. Add/fix <html lang> (axe: html-has-lang)
       if (v.id === 'html-has-lang') {
-        // Add or fix lang attribute on <html>
         const html = document.documentElement;
         if (
           html &&
