@@ -20,7 +20,7 @@
 
 ---
 
-## 🚀 What's New in 1.5.0
+## 🚀 What's New in 1.6.0
 
 **Major autofix engine upgrade!**
 
