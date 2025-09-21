@@ -3,6 +3,9 @@
 ![npm version](https://img.shields.io/npm/v/accessible-a11y-cli?style=flat-square)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)
+![GitHub stars](https://img.shields.io/github/stars/Hermit-commits-code/accessible-a11y-cli?style=social)
+
+> ⭐️ If you find this project useful, please consider starring it on [GitHub](https://github.com/Hermit-commits-code/accessible-a11y-cli)!
 
 > **A robust, developer-friendly CLI for automated accessibility testing and autofix of HTML and JSX files using axe-core.**
 
