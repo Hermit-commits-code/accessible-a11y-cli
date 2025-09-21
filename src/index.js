@@ -136,27 +136,18 @@ class AccessibilityChecker {
       } catch (e) {
         return {
           file: filePath,
-          error: `Failed to parse JSX: ${e.message}`,
+          error: `Failed to process JSX: ${e.message}`,
           violations: [],
           passes: [],
           incomplete: [],
           inapplicable: [],
         };
       }
-    } else if (ext !== '.html' && ext !== '.htm') {
-      return {
-        file: filePath,
-        error: 'Unsupported file type (only .html/.htm/.jsx supported)',
-        violations: [],
-        passes: [],
-        incomplete: [],
-        inapplicable: [],
-      };
     }
 
     // Use jsdom to create a DOM for axe-core
     const { JSDOM } = require('jsdom');
-    const dom = new JSDOM(htmlContent);
+    const dom = new JSDOM(htmlContent, { url: 'file://' + filePath });
     const { window } = dom;
 
     // axe-core expects a global window and document and related classes
@@ -243,6 +234,8 @@ class AccessibilityChecker {
           );
         case 'html':
           return this.formatAutofixHtml(results);
+        case 'markdown':
+          return this.formatAutofixMarkdown(results);
         case 'table':
         default:
           return this.formatAutofixTable(results);
@@ -253,11 +246,57 @@ class AccessibilityChecker {
           return JSON.stringify(results, null, 2);
         case 'html':
           return this.formatAsHtml(results);
+        case 'markdown':
+          return this.formatAsMarkdown(results);
         case 'table':
         default:
           return this.formatAsTable(results);
       }
     }
+  }
+
+  formatAutofixMarkdown(results) {
+    let md = '# Autofix Logs\n';
+    for (const result of results) {
+      md += `\n## File: \`${result.file}\`\n`;
+      if (result.autofixLog && result.autofixLog.length > 0) {
+        md += result.autofixLog.map((msg) => `- ${msg}`).join('\n') + '\n';
+      } else {
+        md += '_(No autofix actions performed)_\n';
+      }
+    }
+    return md;
+  }
+
+  formatAsMarkdown(results) {
+    let md = '# Accessibility Check Results\n';
+    for (const result of results) {
+      md += `\n## File: \`${result.file}\`\n`;
+      if (result.error) {
+        md += `**Error:** ${result.error}\n`;
+        continue;
+      }
+      if (!result.violations || result.violations.length === 0) {
+        md += 'No accessibility violations found!\n';
+      } else {
+        md += `**Violations:** ${result.violations.length}\n`;
+        for (const v of result.violations) {
+          md += `\n- **[${v.id}] ${v.help || v.description || ''}**\n`;
+          md += `  - Impact: \`${v.impact}\`\n`;
+          md += `  - Description: ${v.description}\n`;
+          if (v.helpUrl) md += `  - [Help](${v.helpUrl})\n`;
+          if (v.nodes) {
+            for (const node of v.nodes) {
+              md += `  - Selector: \`${(node.target || []).join(', ')}\`\n`;
+              if (node.failureSummary) {
+                md += `  - Failure: ${node.failureSummary}\n`;
+              }
+            }
+          }
+        }
+      }
+    }
+    return md;
   }
 
   formatAutofixTable(results) {

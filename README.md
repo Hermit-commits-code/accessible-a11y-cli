@@ -20,6 +20,11 @@
 
 ---
 
+## 🚀 What's New in 1.4.0
+
+- **Markdown output support** for both results and autofix logs (`--format markdown`)
+- All output formats (table, JSON, HTML, Markdown) are now robust and fully tested
+
 ## 🚀 What's New in 1.3.1
 
 - Robust CLI integration tests for output/logging (table, JSON, HTML)
@@ -47,6 +52,16 @@
 - Ready for production and open source use
 
 ---
+
+## 🗺️ Roadmap
+
+- [x] Advanced autofix logic for accessibility issues
+- [x] Robust CLI output and logging (table, JSON, HTML)
+- [x] Fail-safe file handling and dry-run
+- [x] Configurable rules and output formats
+- [x] Markdown output support for results and autofix logs
+- [ ] Customizable Markdown templates (planned)
+- [ ] HTML output improvements (planned)
 
 ## 🚀 Vision
 

@@ -1,3 +1,32 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+# [1.4.0] - 2025-09-21
+
+### Added
+
+- Markdown output support for both results and autofix logs (`--format markdown`)
+- All output formats (table, JSON, HTML, Markdown) are now robust and fully tested
+
+### Changed
+
+- Updated documentation and roadmap to reflect Markdown support
+
+# [1.3.2] - 2025-09-21
+
+### Added
+
+- Robust CLI integration tests for output/logging (table, JSON, HTML)
+- Improved unit tests for output formatting
+
+### Fixed
+
+- CLI now outputs autofix logs in the requested format when --fix and --output are used
+- Documentation and changelog updated for new test coverage and CLI output improvements
+
 # [1.3.1] - 2025-09-20
 
 ### Added
@@ -8,12 +37,6 @@
 ### Fixed
 
 - CLI now outputs autofix logs in the requested format when --fix and --output are used
-
-# Changelog
-
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 # [1.2.0] - 2025-09-20
 
