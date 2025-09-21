@@ -2,21 +2,23 @@
 
 ![npm version](https://img.shields.io/npm/v/accessible-a11y-cli?style=flat-square)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/Hermit-commits-code/accessible-a11y-cli/ci.yml?branch=main&style=flat-square)
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)
+
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)
 
 > **A robust, developer-friendly CLI for automated accessibility testing and autofix of HTML and JSX files using axe-core.**
 
----
+## 📚 Table of Contents
 
-- **Comprehensive autofix** for alt, lang, labels, headings, ARIA, color contrast, tabindex, skip links, semantic HTML, and link text
-- **Idempotent, context-aware fixes**—safe to run multiple times
-- **Extensive unit and CLI tests** for every autofix rule and edge case
-- **Clear, actionable CLI output** with color, symbols, and summaries
-- **Rich logging and verbosity options** for troubleshooting
-- **Fail-safe file handling**: always backs up originals before fixing, and supports dry-run by default
-- **Configurable rules and output formats** (table, JSON, HTML) for both results and autofix logs
-- **Great developer experience**: fast, reliable, easy to use, and CI/CD ready
+- [What's New](#-whats-new-in-140)
+- [Roadmap](#-roadmap)
+- [Vision](#-vision)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [Testing & Reliability](#-testing--reliability)
+- [Example](#-example)
+- [Contributing](#-contributing)
+- [License](#-license)
 
 ---
 
