@@ -55,6 +55,7 @@
 
 ---
 
+
 ## 🗺️ Roadmap
 
 - [x] Advanced autofix logic for accessibility issues
@@ -62,6 +63,7 @@
 - [x] Fail-safe file handling and dry-run
 - [x] Configurable rules and output formats
 - [x] Markdown output support for results and autofix logs
+- [x] CI/CD with lint, test, and formatting checks
 - [ ] Customizable Markdown templates (planned)
 - [ ] HTML output improvements (planned)
 

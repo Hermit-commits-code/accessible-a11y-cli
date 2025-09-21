@@ -1,3 +1,14 @@
+# [1.4.2] - 2025-09-21
+
+### Added
+
+- CI/CD workflow for lint, test, and formatting checks on PRs and main branch
+- Roadmap in README checked off for CI/CD
+
+### Changed
+
+- Updated documentation to reflect CI/CD status
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
