@@ -1,8 +1,6 @@
 # accessible-a11y-cli
 
 ![npm version](https://img.shields.io/npm/v/accessible-a11y-cli?style=flat-square)
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/Hermit-commits-code/accessible-a11y-cli/ci.yml?branch=main&style=flat-square)
-
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)
 
@@ -55,7 +53,6 @@
 
 ---
 
-
 ## 🗺️ Roadmap
 
 - [x] Advanced autofix logic for accessibility issues
@@ -63,7 +60,6 @@
 - [x] Fail-safe file handling and dry-run
 - [x] Configurable rules and output formats
 - [x] Markdown output support for results and autofix logs
-- [x] CI/CD with lint, test, and formatting checks
 - [ ] Customizable Markdown templates (planned)
 - [ ] HTML output improvements (planned)
 
@@ -134,18 +130,6 @@ a11y-check check --fix --format table --output autofix-log.txt test/test.html
 # Disable specific rules and output as JSON
 a11y-check check --fix --disable-rule=region,tabindex --format json --output autofix-log.json test/test.html
 ```
-
-## 🗺️ Roadmap
-
-- [x] CLI scaffold and project setup
-- [x] Integrate axe-core for accessibility checks
-- [x] Parse HTML/JSX and report issues in readable format
-- [x] Support CLI flags: format, fix, output
-- [x] Add URL scanning support
-- [x] Add autofix for common issues (alt, lang, more coming)
-- [ ] Markdown/code output support
-- [ ] CI/CD integration and npm release
-- [ ] Collect feedback and iterate
 
 ## 🤝 Contributing
 
