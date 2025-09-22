@@ -2,7 +2,6 @@
 
 ![npm version](https://img.shields.io/npm/v/accessible-a11y-cli?style=flat-square)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)
 ![GitHub stars](https://img.shields.io/github/stars/Hermit-commits-code/accessible-a11y-cli?style=social)
 
 ⭐️ If you find this project useful, please consider starring it on [GitHub](https://github.com/Hermit-commits-code/accessible-a11y-cli)!
@@ -19,7 +18,6 @@
 - [Testing & Reliability](#-testing--reliability)
 - [Example](#-example)
 - [Contributing](#-contributing)
-- [License](#-license)
 
 ---
 
@@ -157,11 +155,5 @@ Contributions are welcome! Please open issues or pull requests for bugs, feature
 3. Add tests for new features
 4. Use [Conventional Commits](https://www.conventionalcommits.org/) for commit messages
 5. Open a pull request and describe your changes
-
-## 📄 License
-
-MIT © Hermit-commits-code
-
----
 
 _This project is not affiliated with Deque Systems. "axe-core" is a trademark of Deque Systems, Inc._
