@@ -25,6 +25,14 @@
 
 **Major autofix engine upgrade!**
 
+- **Customizable Markdown/HTML templates!**
+  - Use `--template <file>` to provide your own Markdown or HTML template for output reports.
+  - Templates support `{{results}}` (inserts formatted results for each file) and `{{json}}` (inserts the full JSON output).
+  - Example usage:
+    ```bash
+    a11y-check check test.html --format markdown --template my-template.md --output report.md
+    ```
+
 - Now supports 8 high-impact autofix rules:
   1. Add/fix `<html lang>`
   2. Add/fix `<title>`
@@ -75,7 +83,7 @@
 - [x] Fail-safe file handling and dry-run
 - [x] Configurable rules and output formats
 - [x] Markdown output support for results and autofix logs
-- [ ] Customizable Markdown templates (planned)
+- [x] Customizable Markdown/HTML templates
 - [ ] HTML output improvements (planned)
 
 ## 🚀 Vision
@@ -105,6 +113,8 @@ a11y-check check path/to/file.html path/to/other.jsx https://example.com
 
 ### Options
 
+- `--template <file>` Use a custom Markdown or HTML template for output (supports `{{results}}` and `{{json}}`)
+
 - `-f, --format <type>` Output format: `table` (default), `json`, or `html`
 - `-o, --output <file>` Save results to a file
 - `--fix` Attempt to auto-fix common accessibility issues (now covers: lang, title, main, h1, image alt, button/link name, table headers, duplicate IDs)
@@ -122,6 +132,21 @@ This CLI is backed by robust unit tests for all autofix logic. Run `npm test` to
 ---
 
 ## 💡 Example
+
+# Example custom Markdown template (my-template.md):
+
+````
+# My Custom Accessibility Report
+
+{{results}}
+
+---
+Full JSON output:
+```json
+{{json}}
+````
+
+````
 
 ```bash
 # Check a local file, a JSX file, and a remote URL
@@ -144,7 +169,7 @@ a11y-check check --fix --format table --output autofix-log.txt test/test.html
 
 # Disable specific rules and output as JSON
 a11y-check check --fix --disable-rule=region,tabindex --format json --output autofix-log.json test/test.html
-```
+````
 
 ## 🤝 Contributing
 

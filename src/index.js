@@ -269,6 +269,43 @@ class AccessibilityChecker {
   }
 
   formatAsMarkdown(results) {
+    // Custom template support
+    if (this.options.templateContent && this.options.format === 'markdown') {
+      // Simple variable replacement: {{results}} and {{json}}
+      let tpl = this.options.templateContent;
+      // {{results}}: repeated block for each result
+      let resultsBlock = '';
+      for (const result of results) {
+        resultsBlock += `\n## File: \`${result.file}\`\n`;
+        if (result.error) {
+          resultsBlock += `**Error:** ${result.error}\n`;
+          continue;
+        }
+        if (!result.violations || result.violations.length === 0) {
+          resultsBlock += 'No accessibility violations found!\n';
+        } else {
+          resultsBlock += `**Violations:** ${result.violations.length}\n`;
+          for (const v of result.violations) {
+            resultsBlock += `\n- **[${v.id}] ${v.help || v.description || ''}**\n`;
+            resultsBlock += `  - Impact: \`${v.impact}\`\n`;
+            resultsBlock += `  - Description: ${v.description}\n`;
+            if (v.helpUrl) resultsBlock += `  - [Help](${v.helpUrl})\n`;
+            if (v.nodes) {
+              for (const node of v.nodes) {
+                resultsBlock += `  - Selector: \`${(node.target || []).join(', ')}\`\n`;
+                if (node.failureSummary) {
+                  resultsBlock += `  - Failure: ${node.failureSummary}\n`;
+                }
+              }
+            }
+          }
+        }
+      }
+      tpl = tpl.replace(/{{\s*results\s*}}/gi, resultsBlock);
+      tpl = tpl.replace(/{{\s*json\s*}}/gi, JSON.stringify(results, null, 2));
+      return tpl;
+    }
+    // Default built-in template
     let md = '# Accessibility Check Results\n';
     for (const result of results) {
       md += `\n## File: \`${result.file}\`\n`;
@@ -371,7 +408,44 @@ class AccessibilityChecker {
   }
 
   formatAsHtml(results) {
-    // TODO: Implement HTML formatting
+    // Custom template support
+    if (this.options.templateContent && this.options.format === 'html') {
+      let tpl = this.options.templateContent;
+      // {{results}}: repeated block for each result
+      let resultsBlock = '';
+      for (const result of results) {
+        resultsBlock += `<h2>File: ${result.file}</h2>`;
+        if (result.error) {
+          resultsBlock += `<p><strong>Error:</strong> ${result.error}</p>`;
+          continue;
+        }
+        if (!result.violations || result.violations.length === 0) {
+          resultsBlock += '<p>No accessibility violations found!</p>';
+        } else {
+          resultsBlock += `<p><strong>Violations:</strong> ${result.violations.length}</p>`;
+          for (const v of result.violations) {
+            resultsBlock += `<ul><li><strong>[${v.id}] ${v.help || v.description || ''}</strong><ul>`;
+            resultsBlock += `<li>Impact: <code>${v.impact}</code></li>`;
+            resultsBlock += `<li>Description: ${v.description}</li>`;
+            if (v.helpUrl)
+              resultsBlock += `<li><a href="${v.helpUrl}">Help</a></li>`;
+            if (v.nodes) {
+              for (const node of v.nodes) {
+                resultsBlock += `<li>Selector: <code>${(node.target || []).join(', ')}</code></li>`;
+                if (node.failureSummary) {
+                  resultsBlock += `<li>Failure: ${node.failureSummary}</li>`;
+                }
+              }
+            }
+            resultsBlock += `</ul></li></ul>`;
+          }
+        }
+      }
+      tpl = tpl.replace(/{{\s*results\s*}}/gi, resultsBlock);
+      tpl = tpl.replace(/{{\s*json\s*}}/gi, JSON.stringify(results, null, 2));
+      return tpl;
+    }
+    // Default built-in template
     return '<html><body><h1>Accessibility Results</h1></body></html>';
   }
 

@@ -43,6 +43,10 @@ program
   .option('--no-fix-dry-run', 'actually write fixes to disk (use with --fix)')
   .option('--verbose', 'verbose output')
   .option('--debug', 'debug output (implies verbose)')
+  .option(
+    '--template <file>',
+    'custom Markdown or HTML template file for output'
+  )
   .action(async (files, options) => {
     const { AccessibilityChecker } = require('../src/index.js');
     if (options.debug) options.verbose = true;
@@ -66,6 +70,17 @@ program
         .split(',')
         .map((r) => r.trim())
         .filter(Boolean);
+    }
+    // Load template if provided
+    if (options.template) {
+      try {
+        options.templateContent = fs.readFileSync(options.template, 'utf8');
+      } catch (e) {
+        console.error(
+          chalk.red(`❌ Failed to read template: ${options.template}`)
+        );
+        process.exit(1);
+      }
     }
     const checker = new AccessibilityChecker(options);
     try {

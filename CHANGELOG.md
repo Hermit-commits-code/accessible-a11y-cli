@@ -1,3 +1,16 @@
+## [1.6.0] - 2024-06-09
+
+### Added
+
+- Customizable Markdown/HTML template support for output reports via `--template <file>` option.
+  - Templates support `{{results}}` (formatted results for each file) and `{{json}}` (full JSON output).
+  - Works with `--format markdown` and `--format html`.
+  - Example usage and template provided in README.md.
+
+### Changed
+
+- Updated documentation and roadmap to reflect new template feature.
+
 # [1.5.0] - 2025-09-21
 
 ### Added
